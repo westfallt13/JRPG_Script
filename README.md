@@ -13,22 +13,61 @@ What is here is free for anyone to use, adapt, or build on.
 ```
 data/
   item_database/
-    item_database.gd          # Item schema definition (name, type, weight, equippable flag, etc.)
-    item_dictionary_array.gd  # Array-backed item registry with add/get helpers
+    consumables/
+      consumables.gd                   # Consumable item registry (syntax fix needed)
+      consumable_effect/               # Subfolders: health, mana_restoration, stat_buffs
+      consumable_type/                 # Consumable type classifications
+    equipment/
+      accessories/
+        accessory_effects/             # Effect definitions for accessories
+        l_ring/dict.l_ring.gd          # Left ring slot
+        necklace/dict.necklaces.gd     # Necklace slot
+        r_ring/dict.r_ring.gd          # Right ring slot
+      armor/
+        armor_effects/                 # Effect definitions for armor
+        armor_types/
+          boots/dict.boots.gd          # Boot slot definitions
+          bottoms/dict.bottoms.gd      # Pants/bottoms slot definitions
+          chests/dict.chests.gd        # Chest armor slot definitions
+          gloves/dict.gloves.gd        # Glove slot definitions
+          helmet/dict.helmets.gd       # Helmet slot definitions
+      weapons/
+        weapon_effects/                # Per-type effect dictionaries (axe, bow, dagger, etc.)
+        weapon_types/                  # Per-type stat dictionaries (axe, bow, dagger, etc.)
+    quest_items/
+      quest_items.gd                   # Quest-specific item registry (3 placeholder items)
+    usable_items/                      # Non-consumable usable items
+      defensive_items/
+      offensive_items/
+      support_items/
   stats/
-    stats.gd                  # Character attributes, health/mana pools, and status conditions
+    ability_and_stability/
+      enemy_abilities/                 # Reserved for enemy ability definitions
+      magic_abilities/                 # Reserved for spell data
+    enemy_stats/                       # Reserved for enemy stat blocks
+    stat_types/
+      attributes/attribute_stats.gd            # 6 core character attributes
+      health_and_mana/health_and_mana.gd        # HP/MP pools (syntax fix needed)
+      health_and_mana/health_and_mana_helper_functions/  # HP/MP utility stubs
+    status_conditions/
+      status_conditions.gd                     # 10 status effects
+      status_condition_helper_functions/        # Status effect application stubs
 ```
 
 ## Systems
 
-### Stats (`data/stats/stats.gd`)
-- **Health & Mana** — current/max pools with a `heal()` helper that clamps to max
-- **Attributes** — six core stats: `strength`, `intelligence`, `vitality`, `willpower`, `agility`, `luck`
-- **Status Conditions** — keyed dictionary of conditions (`Poison`, `Burn`, `Paralyzed`, etc.) with a `condition_type` field distinguishing damage-over-time from status effects
+### Stats (`data/stats/`)
+- **Attributes** (`stat_types/attributes/attribute_stats.gd`) — six core stats: `strength`, `intelligence`, `vitality`, `willpower`, `agility`, `luck`, all defaulting to 10
+- **Health & Mana** (`stat_types/health_and_mana/health_and_mana.gd`) — `current_health`, `max_health`, `current_mana`, `max_mana` pools; currently has a syntax error (values defined outside the dictionary brackets)
+- **Status Conditions** (`status_conditions/status_conditions.gd`) — 10 keyed conditions (`Poison`, `Burn`, `Paralyzed`, etc.) classified as `damage_over_time` or `status_effect`
 
 ### Item Database (`data/item_database/`)
-- `item_database.gd` — defines the item schema: name, description, quantity, weight, total weight, equippable flag, and an extensible `item_type` block for consumables, quest items, and equipment
-- `item_dictionary_array.gd` — a simple array-backed registry with `add_item()` and `get_item()` functions for looking up items by name
+- **Equipment/Weapons** — 7 weapon types (sword, axe, dagger, knife, greatsword, bow, staff), each with `weapon_class` (one-handed/two-handed) and `weapon_effect` fields; paired effect dictionaries in `weapon_effects/`
+- **Equipment/Armor** — 5 slot types (helmet, chest, bottoms, gloves, boots) each with `armor_class` (light/medium/heavy) fields; `armor_effects/` folder reserved for proc effects
+- **Equipment/Accessories** — left ring, right ring, and necklace slots; `accessory_effects/` reserved for proc effects
+- **Consumables** — registry skeleton with subfolders for health, mana restoration, and stat buff effects; currently has a syntax error (`inv` instead of `var`)
+- **Quest Items** — 3 placeholder entries (Ancient Amulet, Enchanted Sword, Mystic Scroll) keyed by `quest_id`
+- **Usable Items** — non-consumable usable items split into defensive, offensive, and support categories; all empty scaffolding
 
 ## What's Excluded
 
