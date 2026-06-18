@@ -1,8 +1,3 @@
-
-
-
-data/stats/ability_and_stability/mental_state.gd
-
-data/stats/ability_and_stability/mental_state/
-data/stats/ability_and_stability/mental_abilities/
+data/stats/ability_and_stability/ability_types/mental_abilities/
+data/stats/ability_and_stability/stability_state/
 DATA_FOLDER_STRUCTURE_PERSONAL.MD
