@@ -1,0 +1,11 @@
+var dictionary_greatswords : Dictionary = {
+    "greatsword_name" : "Test Greatsword",
+    "description" : "This is a test item.",
+    "weapon_class" : {
+        "one_handed" : false,
+        "two_handed" : false,
+    },
+    "weapon_effect" : {
+        #Connect to weapon_effects dictionary
+    }
+}

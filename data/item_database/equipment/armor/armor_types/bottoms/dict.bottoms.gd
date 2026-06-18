@@ -1,3 +1,9 @@
-inv dict_bottoms : Dictionary = {
-    
-    },
+var dict_bottoms : Dictionary = {
+	"bottoms_name" : "Test Bottoms",
+	"description" : "This is a test item.",
+	"armor_class" : {
+		"light" : false,
+		"medium" : false,
+		"heavy" : false
+	}
+	}

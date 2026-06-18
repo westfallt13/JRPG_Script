@@ -1,3 +1,9 @@
-inv dict_chests : Dictionary = {
-    
-    },
+var dict_chests : Dictionary = {
+    "chest_name" : "Test Chest",
+	"description" : "This is a test item.",
+	"armor_class" : {
+		"light" : false,
+		"medium" : false,
+		"heavy" : false
+	}
+}
