@@ -9,3 +9,4 @@
 1. [Turn-Based Combat Open-Source RPG Demo](https://github.com/gdquest-demos/godot-open-rpg)
 2. [Godot Engine Documentation](https://docs.godotengine.org/en/stable/index.html)
 3. [GDScript Language Reference](https://docs.godotengine.org/en/stable/getting_started/scripting/gdscript/gdscript_basics.html)
+4. [Using JSON objects in GDScript](https://docs.godotengine.org/en/stable/classes/class_json.html)

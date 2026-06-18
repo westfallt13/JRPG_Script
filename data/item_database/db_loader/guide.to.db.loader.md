@@ -1,0 +1,1 @@
+### DB_Loader.gd - An autoload script that reads every JSON/ folder into typed arrays (axes, swords, boots, etc.). Any menu just iterates the relevant array. ###
