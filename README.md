@@ -19,12 +19,20 @@ data/
       consumable_type/                 # Consumable type classifications
     equipment/
       accessories/
+        guide_to_accessories.md
         accessory_effects/             # Effect definitions for accessories
-        l_ring/dict.l_ring.gd          # Left ring slot
-        necklace/dict.necklaces.gd     # Necklace slot
-        r_ring/dict.r_ring.gd          # Right ring slot
+        l_ring/
+          dict.l_ring.gd               # Left ring slot
+          guide_to_left_rings.md
+        necklace/
+          dict.necklaces.gd            # Necklace slot
+          guide_to_necklaces.md
+        r_ring/
+          dict.r_ring.gd               # Right ring slot
+          guide_to_right_rings.md
       armor/
         armor_effects/                 # Effect definitions for armor
+          guide_to_armor_effects.md
         armor_types/
           boots/dict.boots.gd          # Boot slot definitions
           bottoms/dict.bottoms.gd      # Pants/bottoms slot definitions
@@ -35,16 +43,24 @@ data/
         weapon_effects/                # Per-type effect dictionaries (axe, bow, dagger, etc.)
         weapon_types/                  # Per-type stat dictionaries (axe, bow, dagger, etc.)
     quest_items/
+      guide_to_quest_items.md
       quest_items.gd                   # Quest-specific item registry (3 placeholder items)
     usable_items/                      # Non-consumable usable items
+      Guide_To_Usable_Items.md
       defensive_items/
+        Guide_To_Defensive_Items.md
       offensive_items/
+        Guide_To_Offensive_Items.md
       support_items/
   stats/
     ability_and_stability/
       enemy_abilities/                 # Reserved for enemy ability definitions
       magic_abilities/                 # Reserved for spell data
     enemy_stats/                       # Reserved for enemy stat blocks
+    level_ups/
+      level_curves/                    # Character level-up curves (excluded from commits)
+      level_value_database/            # Level-up stat value database
+        guide.to.level.value.database.md
     stat_types/
       attributes/attribute_stats.gd            # 6 core character attributes
       health_and_mana/health_and_mana.gd        # HP/MP pools (syntax fix needed)

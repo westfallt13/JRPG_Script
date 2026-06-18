@@ -24,6 +24,7 @@
 #### `data/item_database/quest_items/` — Non-equippable story and quest items.
 | File | Purpose |
 |------|---------|
+| [guide_to_quest_items.md](data/item_database/quest_items/guide_to_quest_items.md) | Guide for creating and using quest items. |
 | [quest_items.gd](data/item_database/quest_items/quest_items.gd) | Defines `dict_quest_items` dictionary with 3 placeholder entries (`quest_item_1–3`): Ancient Amulet, Enchanted Sword, Mystic Scroll — each with a `name`, `description`, and `quest_id`. Marked as placeholder data pending replacement with real game content. |
 
 ---
@@ -31,10 +32,11 @@
 #### `data/item_database/usable_items/` — Non-consumable usable items (thrown objects, tools, etc.)
 All subfolders are empty scaffolding, ready to be populated.
 
-| Folder | Purpose |
+| Folder / File | Purpose |
 |------|---------|
-| `defensive_items/` | *(Empty)* Reserved for defensively-used items (shields, barriers, etc.). |
-| `offensive_items/` | *(Empty)* Reserved for offensively-used items (bombs, throwables, etc.). |
+| [Guide_To_Usable_Items.md](data/item_database/usable_items/Guide_To_Usable_Items.md) | Guide for overall usable items. |
+| `defensive_items/` | *(Empty)* Reserved for defensively-used items (shields, barriers, etc.). Includes [Guide_To_Defensive_Items.md](data/item_database/usable_items/defensive_items/Guide_To_Defensive_Items.md). |
+| `offensive_items/` | *(Empty)* Reserved for offensively-used items (bombs, throwables, etc.). Includes [Guide_To_Offensive_Items.md](data/item_database/usable_items/offensive_items/Guide_To_Offensive_Items.md). |
 | `support_items/` | *(Empty)* Reserved for support/utility items (keys, tools, etc.). |
 
 ---
@@ -48,10 +50,11 @@ Each subfolder holds one `.gd` file defining a dictionary for that slot.
 
 | Folder / File | Purpose |
 |------|---------|
+| [guide_to_accessories.md](data/item_database/equipment/accessories/guide_to_accessories.md) | Guide for accessory structures. |
 | `accessory_effects/` | *(Empty)* Reserved for effect definitions that accessories can proc or apply. |
-| `l_ring/dict.l_ring.gd` | Left ring slot — empty scaffold. |
-| `necklace/dict.necklaces.gd` | Necklace slot — empty scaffold. |
-| `r_ring/dict.r_ring.gd` | Right ring slot — empty scaffold. |
+| `l_ring/dict.l_ring.gd` | Left ring slot — empty scaffold. Also contains [guide_to_left_rings.md](data/item_database/equipment/accessories/l_ring/guide_to_left_rings.md). |
+| `necklace/dict.necklaces.gd` | Necklace slot — empty scaffold. Also contains [guide_to_necklaces.md](data/item_database/equipment/accessories/necklace/guide_to_necklaces.md). |
+| `r_ring/dict.r_ring.gd` | Right ring slot — empty scaffold. Also contains [guide_to_right_rings.md](data/item_database/equipment/accessories/r_ring/guide_to_right_rings.md). |
 
 ---
 
@@ -69,7 +72,7 @@ Each subfolder holds one `.gd` file defining a dictionary for that armor slot. A
 | `helmet/dict.helmets.gd` | Helmet slot — test item scaffold with armor class flags. |
 
 ##### `data/item_database/equipment/armor/armor_effects/`
-*(Empty)* Reserved for effect definitions that armor can proc or apply (e.g., damage reflect, passive resistances).
+*(Empty)* Reserved for effect definitions that armor can proc or apply (e.g., damage reflect, passive resistances). Contains [guide_to_armor_effects.md](data/item_database/equipment/armor/armor_effects/guide_to_armor_effects.md).
 
 ---
 

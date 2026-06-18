@@ -23,5 +23,6 @@
 ### Note: This is not currently fully implemented across all dictionaries, please do so as this naming convention will be applied to all future item definition files to maintain consistency and clarity in the project structure. ###
 3. Added extra guides, all guides and some dictionaries still need fleshed out with actual content, but the structure is now in place to easily add new items and stats as development progresses. This will allow for a more efficient workflow when expanding the game's content in the future.
 4. Updated README.md and DATA_FOLDER_STRUCTURE.md to reflect the new structure and added notes on the purpose of each folder and file. This will help ensure that anyone building upon the project has a clear understanding of where to find specific files and how the overall structure is organized. It will also serve as a reference for future development and help maintain consistency as the project evolves.
-
+5. Added level-up folder structure and guides for level curves and level value database. Level curves are excluded from commits as they contain private game content. 
+6. Added to-do items in the guides for both level curves and level value database to outline the next steps for development in these areas. This will help keep track of what needs to be done and ensure that the leveling system is developed in a cohesive and integrated manner with the rest of the game's mechanics.
 
