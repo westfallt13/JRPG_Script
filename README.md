@@ -1,4 +1,4 @@
-# JRPG Framework (GDScript)
+# JRPG Framework (GDScript) - WORK IN PROGRESS
 
 A modular RPG systems framework written in GDScript for use with the Godot Engine. This repository contains reusable building blocks for character stats, item databases, and related RPG mechanics.
 
