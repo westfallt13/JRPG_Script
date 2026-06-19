@@ -1,0 +1,14 @@
+{
+    "armor_effects": [
+        {
+            "effect_name": "defense_boost",
+            "description": "This is a test effect for the helmet.",
+            "value": 0.1
+        },
+        {
+            "effect_name": "magic_resistance",
+            "description": "This is a test effect for the helmet.",
+            "value": 0.3
+        }
+    ]
+}

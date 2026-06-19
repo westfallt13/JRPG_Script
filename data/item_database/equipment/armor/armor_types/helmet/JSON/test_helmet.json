@@ -1,9 +1,16 @@
 {
-    "helmets_name": "Test Helmet",
-    "description": "This is a test item.",
+    "helmets_name": "Helmet of Testing",
+    "description": "This is a unique test item.",
     "armor_class": {
         "light": false,
         "medium": false,
         "heavy": false
+    },
+    "level_requirement": 1,
+    "rarity": "common",
+    "value": 100,
+    "weight": 5,
+    "durability": 100,
+    "armor_effects": {
     }
 }

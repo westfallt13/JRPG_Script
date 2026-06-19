@@ -1,0 +1,11 @@
+# TO-DO # 
+
+1. Figure out how to parse armor effects from the JSON files to use them in the game for both UI display, and for applying the effects in combat. This will likely involve creating a system to read the JSON data, store it in a structured format, and then apply the effects during combat calculations via accessing the stored data when an armor piece is equipped.
+2. Test the parsing of effects from the placeholder effects in the JSON files.
+3. Figure out how to display the effects in the UI when viewing the armor piece, and also how to show the effects in the combat log when they are applied during combat. This will likely involve creating a system to read the stored effects data and display it in a readable format in the UI, as well as logging the application of effects during combat for player feedback.
+4. Figure out actually apply the effects while equipped. This will likely involve creating a system to check for equipped armor pieces during combat calculations, saves, applying during calculation, and displaying the effects in item information section of the UI when viewing the armor piece.
+5. Figure out how to load attribute modifers from armor_effects.JSON and apply them to the character's stats when the armor is equipped. This will likely involve creating a system to read the attribute modifiers from the JSON file, store them in a structured format, and then apply them to the character's stats when the armor piece is equipped, as well as removing them when the armor piece is unequipped.
+
+
+### NOTE ###
+The armor effects is currently the testing area, am still at the drawing board. Am taking a step back to figure out how to properly implement the armor effects system, so that I can later load this data specifically from the db_loader system later on. For now, I will keep it how it is, as it's viable enough to do the job and reusable with a few changes. Will be brainstorming this one as it's crucial to the entire databases operations, and want to make sure that I get it right from the start before I start implementing across the board.
