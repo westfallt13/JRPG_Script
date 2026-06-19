@@ -10,4 +10,4 @@
 2. [Godot Engine Documentation](https://docs.godotengine.org/en/stable/index.html)
 3. [GDScript Language Reference](https://docs.godotengine.org/en/stable/getting_started/scripting/gdscript/gdscript_basics.html)
 4. [Using JSON objects in GDScript](https://docs.godotengine.org/en/stable/classes/class_json.html)
-5. [A more comprehensive guide of GDscript, website similar to W3Schools] (https://www.tpointtech.com/godot-introduction-of-gdscript)
+5. [A more comprehensive guide of GDscript, website similar to W3Schools](https://www.tpointtech.com/godot-introduction-of-gdscript)
