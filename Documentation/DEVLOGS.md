@@ -17,7 +17,7 @@
 5. Broke up large files into smaller, more manageable ones for better organization and maintainability. This will help improve readability and make it easier to navigate the codebase as it grows in complexity.
 
 
-##2026, June 18th ##
+## 2026, June 18th ##
 1. Laid out placeholder scheme definitions in dictionaries for both weapon and armor types. This will serve as a template for future item entries and help ensure consistency across the item database.
 2. Renamed all .gd files in the weapon_types with a "dict." before declaring the armor type, so that dictionary files are easily identifiable and distinguishable from other script files. This will improve organization and make it easier to locate specific item definitions when needed. 
 ### Note: This is not currently fully implemented across all dictionaries, please do so as this naming convention will be applied to all future item definition files to maintain consistency and clarity in the project structure. ###
