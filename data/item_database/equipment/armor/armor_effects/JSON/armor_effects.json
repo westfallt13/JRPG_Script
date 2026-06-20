@@ -2,12 +2,12 @@
     "armor_effects": [
         {
             "effect_name": "defense_boost",
-            "description": "This is a test effect for the helmet.",
+            "description": "Increases both the physical defense of the wearer by 10%.",
             "value": 0.1
         },
         {
             "effect_name": "magic_resistance",
-            "description": "This is a test effect for the helmet.",
+            "description": "Provides resistance to magical attacks to the wearer by 10%.",
             "value": 0.3
         }
     ]

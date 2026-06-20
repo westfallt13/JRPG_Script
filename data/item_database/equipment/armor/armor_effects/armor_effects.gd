@@ -2,9 +2,6 @@
 # each entry is keyed by its "effect_name".
 # To add an effect: add an object to the array in armor_effects.json.
 
-@tool
-extends EditorScript
-
 const JSON_FILE := "res://JRPG_Code/JRPG_Script/data/item_database/equipment/armor/armor_effects/JSON/armor_effects.json"
 const ROOT_KEY := "armor_effects"
 const KEY_FIELD := "effect_name"
