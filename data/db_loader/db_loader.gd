@@ -101,7 +101,7 @@ func category_names() -> Array:
 
 # Force-load (or reload) every category now. Useful for a loading screen, or to
 # pick up JSON edited at runtime.
-func load_all() -> void:
+func load_all() :
 	for category in _loaders:
 		_cache[category] = _loaders[category].get_all()
 
