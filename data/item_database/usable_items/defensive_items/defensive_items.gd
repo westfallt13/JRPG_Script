@@ -1,4 +1,7 @@
 # Defensive-item loader. Each .json file in JSON/ is one item, keyed by its "item_name".
+
+@tool
+extends EditorScript
 # To add a defensive item: drop a new .json file in JSON/ — no code changes needed.
 # (Change KEY_FIELD if you name the field differently in your JSON.)
 

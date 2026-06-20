@@ -2,6 +2,9 @@
 # To add a right ring: drop a new .json file in JSON/ — no code changes needed.
 # (Change KEY_FIELD if you name the field differently in your JSON.)
 
+@tool
+extends EditorScript
+
 const JSON_DIR := "res://JRPG_Code/JRPG_Script/data/item_database/equipment/accessories/r_ring/JSON/"
 const KEY_FIELD := "r_ring_name"
 

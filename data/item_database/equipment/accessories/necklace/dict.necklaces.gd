@@ -1,6 +1,9 @@
 # Necklace loader. Each .json file in JSON/ is one necklace, keyed by its "necklace_name".
 # To add a necklace: drop a new .json file in JSON/ — no code changes needed.
 # (Change KEY_FIELD if you name the field differently in your JSON.)
+@tool
+extends EditorScript
+
 
 const JSON_DIR := "res://JRPG_Code/JRPG_Script/data/item_database/equipment/accessories/necklace/JSON/"
 const KEY_FIELD := "necklace_name"

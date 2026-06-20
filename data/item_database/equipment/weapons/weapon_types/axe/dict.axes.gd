@@ -1,4 +1,6 @@
 # Axe loader. Each .json file in JSON/ is one axe, keyed by its "axe_name".
+@tool
+extends EditorScript
 # To add an axe: drop a new .json file in JSON/ — no code changes needed.
 
 const JSON_DIR := "res://JRPG_Code/JRPG_Script/data/item_database/equipment/weapons/weapon_types/axe/JSON/"

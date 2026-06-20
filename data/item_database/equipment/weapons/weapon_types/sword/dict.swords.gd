@@ -1,5 +1,7 @@
 # Sword loader. Each .json file in JSON/ is one sword, keyed by its "sword_name".
 # To add a sword: drop a new .json file in JSON/ — no code changes needed.
+@tool
+extends EditorScript
 
 const JSON_DIR := "res://JRPG_Code/JRPG_Script/data/item_database/equipment/weapons/weapon_types/sword/JSON/"
 const KEY_FIELD := "sword_name"
