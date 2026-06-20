@@ -8,6 +8,8 @@ This framework was developed as the backbone of a personal JRPG project. The cor
 
 What is here is free for anyone to use, adapt, or build on.
 
+## Installation Guide (see [INSTALLATION_GUIDE.md](Documentation/INSTALLATION_GUIDE.md) for details)
+
 ## Structure
 
 ```

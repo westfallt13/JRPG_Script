@@ -5,5 +5,5 @@
         "one_handed": false,
         "two_handed": false
     },
-    "weapon_effect": ["keen_edge"]
+    "weapon_effect": ["keen_edge", "low_hp_rage"]
 }

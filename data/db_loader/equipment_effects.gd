@@ -107,6 +107,26 @@ static func with_effects(category: String, item_key: String) -> Dictionary:
 	return bundle
 
 
+# Like for_item, but keeps only effects whose optional "condition" passes for the
+# given `context` (battle state, wearer stats, target info, ...). Effects with no
+# "condition" always pass. This is the gate for "apply only in certain situations":
+# resolve everything, then filter by ConditionChecker.
+static func active_for_item(category: String, item: Dictionary, context: Dictionary) -> Array:
+	var active := []
+	for effect in for_item(category, item):
+		if ConditionChecker.passes(effect.get("condition", null), context):
+			active.append(effect)
+	return active
+
+
+# Same as active_for_item, but fetches the item from DbLoader by its key first.
+static func active_for_item_key(category: String, item_key: String, context: Dictionary) -> Array:
+	var item = DbLoader.get_item(category, item_key)
+	if not item is Dictionary:
+		return []
+	return active_for_item(category, item, context)
+
+
 # Direct lookup of a single effect by category + effect_name (e.g. tooltips or
 # tests). Returns the effect Dictionary, or {} if not found. The category picks
 # the correct collection (so "swords" reads sword_effects, "boots" reads

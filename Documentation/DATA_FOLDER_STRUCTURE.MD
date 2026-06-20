@@ -10,8 +10,11 @@ All game data is authored as JSON and loaded through one autoloaded singleton. G
 |------|---------|
 | [json_db.gd](data/db_loader/json_db.gd) | `class_name JsonDB` — static JSON helpers used by every loader: `read_json`, `index_by`, `load_dir` (one item per file in a `JSON/` folder), `load_collection` (one file holding an array of effects). |
 | [db_loader.gd](data/db_loader/db_loader.gd) | Autoloaded as **`DbLoader`**. Aggregates every per-folder loader, loads each category lazily and caches it. API: `get_category(name)`, `get_item(category, key)`, `get_categories([...])`, `category_names()`, `load_all()`, `reload(name)`, `clear_cache()`. |
-| [equipment_effects.gd](data/db_loader/equipment_effects.gd) | `class_name EquipmentEffects` — resolves an equipment item's named effects into full effect data. API: `for_item`, `for_item_key`, `with_effects`, `get_effect`, `effect_field`, `effects_category`, `is_linked`. |
-| [guide.to.db.loader.md](data/db_loader/guide.to.db.loader.md) | Design notes for the loader. |
+| [equipment_effects.gd](data/db_loader/equipment_effects.gd) | `class_name EquipmentEffects` — resolves an equipment item's named effects into full effect data. API: `for_item`, `for_item_key`, `with_effects`, `get_effect`, `active_for_item`, `active_for_item_key` (condition-filtered), `effect_field`, `effects_category`, `is_linked`. |
+| [condition_checker.gd](data/db_loader/condition_checker.gd) | `class_name ConditionChecker` — `passes(condition, context)` decides whether an effect applies. Conditions are `{key, op, value}` (or a list = AND); ops `== != < <= > >= in has`. |
+| [battle_context.gd](data/db_loader/battle_context.gd) | `class_name BattleContext` — the shared context-key vocabulary (constants like `WEARER_HP_PCT`, `TARGET_TYPE`), a chainable builder, and typed getters (`num`/`text`/`flag`/`list`). |
+| [guide.to.db.loader.md](data/db_loader/guide.to.db.loader.md) | Usage guide: accessing data, effects, conditions, and adding content. |
+| [guide.to.battle.context.md](data/db_loader/guide.to.battle.context.md) | Master guide to every context key and how to build/read a context. |
 
 **How each data folder works:** every leaf folder holds a small loader `.gd` (declares a path + key field, exposes `static func get_all()`) plus a `JSON/` subfolder containing the actual data. To add an item you drop a `.json` file in `JSON/` — no code changes. Item-type folders use one JSON file per item, keyed by a name field; `*_effects` folders use a single JSON file holding an array of effects keyed by `effect_name`.
 
