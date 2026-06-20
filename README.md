@@ -12,9 +12,15 @@ What is here is free for anyone to use, adapt, or build on.
 
 ```
 data/
+  db_loader/
+    json_db.gd                         # JsonDB — static JSON read/index helpers
+    db_loader.gd                       # DbLoader autoload — central data access point
+    equipment_effects.gd               # EquipmentEffects — item -> effect resolver
+    guide.to.db.loader.md
   item_database/
     consumables/
-      consumables.gd                   # Consumable item registry (syntax fix needed)
+      consumables.gd                   # Consumable loader (reads JSON/)
+      JSON/                            # One .json file per consumable
       consumable_effect/               # Subfolders: health, mana_restoration, stat_buffs
       consumable_type/                 # Consumable type classifications
     equipment/
@@ -72,18 +78,25 @@ data/
 
 ## Systems
 
+### Data Loading (`data/db_loader/`)
+All game data is authored as JSON and accessed through a single autoloaded singleton — gameplay code never reads files directly.
+- **`DbLoader`** (`db_loader.gd`, autoload) — central access point. `get_category(name)` returns a category as a name-keyed dictionary; `get_item(category, key)` fetches one entry; `load_all()` warms everything (e.g. on a loading screen). Categories load lazily and are cached.
+- **`JsonDB`** (`json_db.gd`) — static JSON helpers shared by every loader: `read_json`, `index_by`, `load_dir`, `load_collection`.
+- **`EquipmentEffects`** (`equipment_effects.gd`) — resolves an equipment item's named effects into full effect data. `EquipmentEffects.for_item_key("swords", name)` returns the effect objects to feed UI text, attribute math, and damage/status logic.
+- **Adding content** — each leaf data folder has a loader `.gd` plus a `JSON/` subfolder. Drop a `.json` file in `JSON/` to add an item; no code changes. Items reference effects by name (`weapon_effect` / `armor_effects` / `accessory_effects`), resolved against the matching effects collection.
+
 ### Stats (`data/stats/`)
 - **Attributes** (`stat_types/attributes/attribute_stats.gd`) — six core stats: `strength`, `intelligence`, `vitality`, `willpower`, `agility`, `luck`, all defaulting to 10
 - **Health & Mana** (`stat_types/health_and_mana/health_and_mana.gd`) — `current_health`, `max_health`, `current_mana`, `max_mana` pools; currently has a syntax error (values defined outside the dictionary brackets)
 - **Status Conditions** (`status_conditions/status_conditions.gd`) — 10 keyed conditions (`Poison`, `Burn`, `Paralyzed`, etc.) classified as `damage_over_time` or `status_effect`
 
 ### Item Database (`data/item_database/`)
-- **Equipment/Weapons** — 7 weapon types (sword, axe, dagger, knife, greatsword, bow, staff), each with `weapon_class` (one-handed/two-handed) and `weapon_effect` fields; paired effect dictionaries in `weapon_effects/`
-- **Equipment/Armor** — 5 slot types (helmet, chest, bottoms, gloves, boots) each with `armor_class` (light/medium/heavy) fields; `armor_effects/` folder reserved for proc effects
-- **Equipment/Accessories** — left ring, right ring, and necklace slots; `accessory_effects/` reserved for proc effects
-- **Consumables** — registry skeleton with subfolders for health, mana restoration, and stat buff effects; currently has a syntax error (`inv` instead of `var`)
-- **Quest Items** — 3 placeholder entries (Ancient Amulet, Enchanted Sword, Mystic Scroll) keyed by `quest_id`
-- **Usable Items** — non-consumable usable items split into defensive, offensive, and support categories; all empty scaffolding
+- **Equipment/Weapons** — 7 weapon types (sword, axe, dagger, knife, greatsword, bow, staff), each with `weapon_class` (one-handed/two-handed) and a `weapon_effect` field naming effects resolved against that type's `weapon_effects/` collection
+- **Equipment/Armor** — 5 slot types (helmet, chest, bottoms, gloves, boots) each with `armor_class` (light/medium/heavy) and an optional `armor_effects` field; all share the `armor_effects/` collection (defines `defense_boost`, `magic_resistance`)
+- **Equipment/Accessories** — left ring, right ring, and necklace slots; share the `accessory_effects/` collection
+- **Consumables** — loader keyed by `consumable_name`, reads its `JSON/` folder (empty scaffolding, ready to fill)
+- **Quest Items** — 3 entries (Ancient Amulet, Enchanted Sword, Mystic Scroll), one `.json` per item, keyed by `name`
+- **Usable Items** — non-consumable usable items split into defensive, offensive, and support categories; loaders in place, `JSON/` folders ready to fill
 
 ## What's Excluded
 

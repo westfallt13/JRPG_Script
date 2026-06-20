@@ -1,9 +1,11 @@
-var dict_boots : Dictionary = {
-	"boots_name" : "Test Boots",
-	"description" : "This is a test item.",
-	"armor_class" : {
-		"light" : false,
-		"medium" : false,
-		"heavy" : false
-	},
-	}
+# Boots loader. Each .json file in JSON/ is one pair of boots, keyed by its "boots_name".
+# To add boots: drop a new .json file in JSON/ — no code changes needed.
+
+const JSON_DIR := "res://JRPG_Code/JRPG_Script/data/item_database/equipment/armor/armor_types/boots/JSON/"
+const KEY_FIELD := "boots_name"
+
+static func get_all() -> Dictionary:
+	return JsonDB.load_dir(JSON_DIR, KEY_FIELD)
+
+
+## Figure out a way to link boot items in JSON object to their effects in armor_effects.json. Maybe an "armor_effects" field in the boots JSON, which is a list of effect names? Then we can look up those names in the armor_effects collection to get/apply the actual effect data.
