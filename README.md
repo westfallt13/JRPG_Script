@@ -2,6 +2,8 @@
 
 A modular RPG systems framework hand-written in GDScript for use with the Godot Engine. This repository contains reusable building blocks for character stats, item databases, and related RPG mechanics.
 
+### Note: As this is a work in progress and it is intended to transform into a giant build, it will contain bugs, especially if it's an unfinished section. To find notes on dev, look in the guide.md files throughout the repository, or (see [DEVLOGS.md](Documentation/DEVLOGS.md) for latest updates)
+
 ## About
 
 This framework was developed as the backbone of a personal JRPG project. The core systems are generic enough to be dropped into any Godot RPG project. Some files have been intentionally excluded from this repository — they contain game-specific content (story, world data, balancing) that is private to the author's game.
