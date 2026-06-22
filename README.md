@@ -69,9 +69,11 @@ data/
         enemy_abilities/enemy_abilities.gd     # Loader: "enemy_abilities" (reads JSON/)
     enemy_stats/                       # Reserved for enemy stat blocks
     level_ups/
-      level_curves/                    # Character level-up curves (excluded from commits)
-      level_value_database/            # Level-up stat value database
-        guide.to.level.value.database.md
+      level_ups.gd                     # class_name Leveling — XP & level-up logic
+      level_value_database/
+        level_value_database.gd        # Loader: "level_curve" — XP thresholds + per-level gains
+        JSON/default_curve.json        # public default curve
+        level_curves/                  # private per-character curves (excluded from commits)
     stat_types/
       attributes/attribute_stats.gd            # Loader: "attributes" — 6 core stats (reads JSON/)
       health_and_mana/health_and_mana.gd        # Loader: "health_and_mana" — HP/MP pools (reads JSON/)
@@ -99,6 +101,7 @@ The stat systems use the **same loader + `JSON/` pattern** as the item database 
 - **Health & Mana** (`DbLoader.get_category("health_and_mana")`) — pool defaults `max_health`, `current_health`, `max_mana`, `current_mana` (all 100), keyed by `stat_name`
 - **Status Conditions** (`DbLoader.get_category("status_conditions")`) — 10 conditions (`Poison`, `Burn`, `Paralyzed`, etc.) keyed by `status_name`, classified as `damage_over_time` or `status_effect`
 - **Magic / Enemy Abilities** (`DbLoader.get_category("magic_abilities")`, `"enemy_abilities"`) — element/type-tagged ability definitions (one test placeholder each, ready to fill)
+- **Leveling** (`level_ups/level_ups.gd` = `class_name Leveling`; curve via `DbLoader.get_category("level_curve")`) — `Leveling.grant_xp(combatant, amount)` adds XP and applies every level-up crossed, growing attributes and HP/MP from `default_curve.json` (`{ level, xp_to_reach, gains }`). Numbers in JSON, math in code; a private per-character curve can be passed in instead.
 
 ### Item Database (`data/item_database/`)
 - **Equipment/Weapons** — 7 weapon types (sword, axe, dagger, knife, greatsword, bow, staff), each with `weapon_class` (one-handed/two-handed) and a `weapon_effect` field naming effects resolved against that type's `weapon_effects/` collection
@@ -113,6 +116,7 @@ The stat systems use the **same loader + `JSON/` pattern** as the item database 
 - **Equipment** — `equip(slot, category, key)` stores each item's category alongside its key, so effects resolve per category. Slots: weapon, helmet, chest, bottoms, gloves, boots, l_ring, r_ring, necklace.
 - **`build_context()`** — the single place wearer-side context keys are produced (via `BattleContext`), so conditions always see `wearer_statuses`, never a bare `statuses`.
 - **`active_equipment_effects()`** — resolves every equipped item's condition-filtered effects against the combatant's own context (e.g. the Test Sword's `low_hp_rage` activates only below 30% HP). `total_stat(stat)` / `derived_stat(stat, base)` fold those into numbers via `EffectResolver` — the Test Sword raises `crit_chance` by 0.15, and adds +25% damage only below 30% HP.
+- **Leveling** — tracks `level`/`xp`; `Leveling.grant_xp(hero, 300)` applies the level-ups it crosses, and `gain_level(gains)` grows base attributes and HP/MP pools (gear modifiers still stack on top via `total_stat`).
 
 ### Tooling (`tools/`)
 - **`smoke_test.gd`** — an `EditorScript` that loads every `DbLoader` category and prints a per-category item count + total. **File ▸ Run** (`Ctrl+Shift+X`); watch the Output panel for counts and load warnings.

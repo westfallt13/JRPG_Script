@@ -1,0 +1,9 @@
+{
+    "level_curve": [
+        { "level": 1, "xp_to_reach": 0,    "gains": {} },
+        { "level": 2, "xp_to_reach": 100,  "gains": { "max_health": 10, "max_mana": 5, "strength": 2, "vitality": 1 } },
+        { "level": 3, "xp_to_reach": 250,  "gains": { "max_health": 12, "max_mana": 6, "strength": 2, "agility": 1 } },
+        { "level": 4, "xp_to_reach": 450,  "gains": { "max_health": 14, "max_mana": 7, "vitality": 2, "intelligence": 1 } },
+        { "level": 5, "xp_to_reach": 700,  "gains": { "max_health": 16, "max_mana": 8, "strength": 3, "willpower": 1 } }
+    ]
+}

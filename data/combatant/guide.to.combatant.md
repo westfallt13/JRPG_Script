@@ -81,6 +81,21 @@ hero.remove_status("Poison")
 
 ---
 
+## Leveling
+
+`level` and `xp` are fields; the [`Leveling`](../stats/level_ups/guide.to.level.ups.md)
+system grows them from a curve:
+
+```gdscript
+Leveling.grant_xp(hero, 300)   # add XP, apply every level-up crossed -> [2, 3]
+```
+
+`gain_level(gains)` is the per-level mutation it drives: `max_health`/`max_mana` grow
+the pool (and `current_*` rises with it), any other key grows that **base** attribute —
+so equipment modifiers still stack on top via `total_stat`.
+
+---
+
 ## Derived reads
 
 ```gdscript

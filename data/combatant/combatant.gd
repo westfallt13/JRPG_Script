@@ -34,6 +34,7 @@ const SLOTS := [
 
 var display_name: String = "Unnamed"
 var level: int = 1
+var xp: int = 0                         # total accumulated XP (see Leveling)
 
 var base_attributes: Dictionary = {}   # "strength" -> int  (live; seeded from template)
 var max_health: int = 0
@@ -126,6 +127,28 @@ func remove_status(status_name: String) -> void:
 	statuses.erase(status_name)
 
 
+# --- Progression ------------------------------------------------------------
+
+# Advance one level and apply its stat gains. `gains` maps stat names to integer
+# deltas: "max_health"/"max_mana" grow the pool (current rises by the same delta, so
+# the pool expands without a surprise full-heal or chip damage); any other key grows
+# that base attribute. Driven by Leveling.grant_xp(); call it through there rather
+# than directly, so XP and level stay in step.
+func gain_level(gains: Dictionary) -> void:
+	level += 1
+	for stat in gains:
+		var amount := int(gains[stat])
+		match stat:
+			"max_health":
+				max_health += amount
+				current_health += amount
+			"max_mana":
+				max_mana += amount
+				current_mana += amount
+			_:
+				base_attributes[stat] = int(base_attributes.get(stat, 0)) + amount
+
+
 # --- Derived reads ----------------------------------------------------------
 
 func hp_pct() -> float:
@@ -203,7 +226,7 @@ func validate(loader = null) -> Array:
 
 
 func _to_string() -> String:
-	return "Combatant(%s, Lv%d, HP %d/%d, MP %d/%d, statuses=%s, equipped=%s)" % [
-		display_name, level, current_health, max_health, current_mana, max_mana,
+	return "Combatant(%s, Lv%d (%dxp), HP %d/%d, MP %d/%d, statuses=%s, equipped=%s)" % [
+		display_name, level, xp, current_health, max_health, current_mana, max_mana,
 		str(statuses), str(equipment.keys()),
 	]

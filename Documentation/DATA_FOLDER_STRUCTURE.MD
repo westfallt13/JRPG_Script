@@ -29,7 +29,7 @@ All game data is authored as JSON and loaded through one autoloaded singleton. G
 
 | File | Purpose |
 |------|---------|
-| [combatant.gd](data/combatant/combatant.gd) | `class_name Combatant` (RefCounted). One entity's **live state** — base attributes, HP/MP pools, equipment (`slot -> {category, key}`), and statuses — seeded from the Phase 1 templates via `seed_from_templates()`. Reads: `hp_pct`/`mp_pct`, `base_stat`, plus gear-aware `total_stat`/`derived_stat`/`equipment_modifiers` (base + active gear folded via `EffectResolver`). `build_context()` is the **single** place wearer-side context keys are built (via `BattleContext`), which closes the `statuses` vs `wearer_statuses` drift. `active_equipment_effects()` resolves all equipped items' condition-filtered effects against the combatant's own context (runtime; uses the global `DbLoader`/`EquipmentEffects`). |
+| [combatant.gd](data/combatant/combatant.gd) | `class_name Combatant` (RefCounted). One entity's **live state** — base attributes, HP/MP pools, equipment (`slot -> {category, key}`), statuses, and `level`/`xp` — seeded from the Phase 1 templates via `seed_from_templates()`. `gain_level(gains)` applies a level's stat growth (driven by `Leveling`, Phase 4). Reads: `hp_pct`/`mp_pct`, `base_stat`, plus gear-aware `total_stat`/`derived_stat`/`equipment_modifiers` (base + active gear folded via `EffectResolver`). `build_context()` is the **single** place wearer-side context keys are built (via `BattleContext`), which closes the `statuses` vs `wearer_statuses` drift. `active_equipment_effects()` resolves all equipped items' condition-filtered effects against the combatant's own context (runtime; uses the global `DbLoader`/`EquipmentEffects`). |
 | [guide.to.combatant.md](data/combatant/guide.to.combatant.md) | Usage guide: templates vs. live state, building, equipping, statuses, derived stats, `build_context`, and how to verify. |
 
 > Verified by `tools/combatant_test.gd` (EditorScript — autoload-free surface) and `node_2dtestdb.gd` (run with F5 — the live gear-resolving path).
@@ -179,6 +179,16 @@ As of Phase 1, the stat systems below follow the **same loader + `JSON/` pattern
 |------|---------|
 | [status_conditions.gd](data/stats/status_conditions/status_conditions.gd) | Loader for **`status_conditions`** — reads `JSON/status_conditions.json` (array under `status_conditions`, keyed by `status_name`). 10 conditions: **Poison, Burn, Bleeding, Silenced, Sleep, Cursed, Frozen, Paralyzed, Confused, Stunned** — each `{ status_name, condition_type, description }`, classified as `damage_over_time` or `status_effect`. |
 | `status_condition_helper_functions/status_condition_helper_functions.gd` | Contains a stub `apply_status_condition(target, condition)` function. Logic not yet implemented. |
+
+---
+
+#### `data/stats/level_ups/` — XP & leveling (Phase 4).
+| File | Purpose |
+|------|---------|
+| [level_ups.gd](data/stats/level_ups/level_ups.gd) | `class_name Leveling` — XP & level-up logic. `grant_xp(combatant, amount)` adds XP and applies every level-up crossed; also `level_up`, `level_for_xp`, `xp_to_reach`, `max_level`. The curve is injectable (defaults to the `level_curve` category). See [guide.to.level.ups.md](data/stats/level_ups/guide.to.level.ups.md). |
+| [level_value_database/level_value_database.gd](data/stats/level_ups/level_value_database/level_value_database.gd) | Loader for **`level_curve`** — reads `JSON/default_curve.json`, keyed by level (int). Each entry `{ level, xp_to_reach, gains }`; the public default curve. Per-character curves live in the gitignored `level_curves/`. See [guide.to.lvl.database.md](data/stats/level_ups/level_value_database/guide.to.lvl.database.md). |
+
+> `level_value_database/level_curves/` is private game content (gitignored).
 
 ---
 

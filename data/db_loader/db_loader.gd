@@ -72,6 +72,7 @@ func _ready() -> void:
 		"status_conditions": preload(_STATS_BASE + "status_conditions/status_conditions.gd"),
 		"magic_abilities":   preload(_STATS_BASE + "ability_and_stability/ability_types/magic_abilities/magic_abilities.gd"),
 		"enemy_abilities":   preload(_STATS_BASE + "ability_and_stability/ability_types/enemy_abilities/enemy_abilities.gd"),
+		"level_curve":       preload(_STATS_BASE + "level_ups/level_value_database/level_value_database.gd"),
 	}
 
 

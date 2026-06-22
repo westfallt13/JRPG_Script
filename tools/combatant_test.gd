@@ -15,6 +15,7 @@ extends EditorScript
 const DB_LOADER := preload("res://JRPG_Code/JRPG_Script/data/db_loader/db_loader.gd")
 const COMBATANT := preload("res://JRPG_Code/JRPG_Script/data/combatant/combatant.gd")
 const RESOLVER := preload("res://JRPG_Code/JRPG_Script/data/db_loader/effect_resolver.gd")
+const LEVELING := preload("res://JRPG_Code/JRPG_Script/data/stats/level_ups/level_ups.gd")
 
 var _pass := 0
 var _fail := 0
@@ -103,6 +104,36 @@ func _run() -> void:
 		{"kind": "stat_mod", "target": "damage", "op": "mult", "value": 0.25},
 	]
 	check("two mults stack additively -> x1.5", is_equal_approx(RESOLVER.derived(100.0, "damage", two), 150.0))
+
+	# --- Leveling (injected curve -> fully testable without the autoload) ---
+	var curve := {
+		1: {"level": 1, "xp_to_reach": 0,   "gains": {}},
+		2: {"level": 2, "xp_to_reach": 100, "gains": {"max_health": 10, "strength": 2}},
+		3: {"level": 3, "xp_to_reach": 250, "gains": {"max_health": 10, "vitality": 1}},
+	}
+	check("level_for_xp: 120 -> level 2", LEVELING.level_for_xp(120, curve) == 2)
+	check("level_for_xp: 0 -> level 1", LEVELING.level_for_xp(0, curve) == 1)
+	check("xp_to_reach(3) == 250", LEVELING.xp_to_reach(3, curve) == 250)
+	check("max_level(curve) == 3", LEVELING.max_level(curve) == 3)
+
+	var lc = COMBATANT.new("Leveler", 1)
+	lc.seed_from_templates(db)   # strength 10, max_health 100, current_health 100
+	var gained1: Array = LEVELING.grant_xp(lc, 120, curve)
+	check("grant 120xp -> gained [2]", gained1.size() == 1 and gained1[0] == 2)
+	check("now level 2", lc.level == 2)
+	check("xp recorded", lc.xp == 120)
+	check("strength grew 10 -> 12", lc.base_stat("strength") == 12)
+	check("max_health grew 100 -> 110", lc.max_health == 110)
+	check("current_health rose with the pool (110)", lc.current_health == 110)
+
+	var gained2: Array = LEVELING.grant_xp(lc, 200, curve)   # total 320 -> crosses level 3
+	check("grant 200 more (320 total) -> gained [3]", gained2.size() == 1 and gained2[0] == 3)
+	check("now level 3", lc.level == 3)
+	check("vitality grew 10 -> 11", lc.base_stat("vitality") == 11)
+	check("max_health 110 -> 120", lc.max_health == 120)
+
+	var gained3: Array = LEVELING.grant_xp(lc, 9999, curve)  # past the top of the curve
+	check("XP past max level grants no level", gained3.is_empty() and lc.level == 3)
 
 	print("──────────────────────────────────────────────")
 	print("  %d passed, %d failed" % [_pass, _fail])
