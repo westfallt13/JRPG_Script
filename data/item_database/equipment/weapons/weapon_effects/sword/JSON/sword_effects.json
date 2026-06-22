@@ -3,11 +3,17 @@
         {
             "effect_name": "keen_edge",
             "description": "Increases critical hit chance.",
+            "kind": "stat_mod",
+            "target": "crit_chance",
+            "op": "add",
             "value": 0.15
         },
         {
             "effect_name": "low_hp_rage",
             "description": "Deals +25% damage while the wielder is below 30% HP.",
+            "kind": "stat_mod",
+            "target": "damage",
+            "op": "mult",
             "value": 0.25,
             "condition": { "key": "wearer_hp_pct", "op": "<", "value": 0.3 }
         }

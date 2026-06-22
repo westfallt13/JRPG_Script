@@ -92,7 +92,8 @@ Using the result anywhere — UI, attributes, damage:
 ```gdscript
 for fx in EquipmentEffects.for_item_key("swords", weapon_name):
     tooltip_text += "%s\n" % fx["description"]   # UI
-    bonus += float(fx.get("value", 0.0))         # stat / damage math
+# For stat/damage math, fold the effects with EffectResolver rather than summing raw
+# values by hand (it honours each effect's target/op) — see guide.to.effect.resolver.md.
 ```
 
 ---
@@ -108,17 +109,21 @@ context keys are standardized in `BattleContext` — see
 var context := {
     "wearer_hp_pct": 0.25,
     "target_type": "undead",
-    "statuses": ["Poison"],
+    "wearer_statuses": ["Poison"],
 }
 var active := EquipmentEffects.active_for_item_key("swords", weapon_name, context)
 # only effects whose condition passes (effects with no condition always pass)
 ```
 
+In practice you rarely hand-build the wearer side: a `Combatant` does it for you via
+`combatant.build_context()`, which uses the `BattleContext` key names (so it's always
+`wearer_statuses`, never a bare `statuses`).
+
 Condition shapes in the effect JSON (all optional):
 ```json
 "condition": { "key": "wearer_hp_pct", "op": "<", "value": 0.3 }
 "condition": { "key": "target_type", "op": "==", "value": "undead" }
-"condition": { "key": "statuses", "op": "has", "value": "Poison" }
+"condition": { "key": "wearer_statuses", "op": "has", "value": "Poison" }
 "condition": [
     { "key": "wearer_hp_pct", "op": "<", "value": 0.3 },
     { "key": "target_type", "op": "==", "value": "undead" }
@@ -159,16 +164,22 @@ Example weapon (`equipment/weapons/weapon_types/sword/JSON/flame_brand.json`):
 ```
 
 **Effects** (`*_effects` folders): one collection file holding an array under the
-folder's root key, each entry keyed by `effect_name`. Add an object to the array:
+folder's root key, each entry keyed by `effect_name`. An effect declares what it does
+via `kind`/`target`/`op` (read by `EffectResolver` — see
+[guide.to.effect.resolver.md](guide.to.effect.resolver.md)). Add an object to the array:
 ```json
 {
     "sword_effects": [
-        { "effect_name": "keen_edge", "description": "Increases crit chance.", "value": 0.15 },
-        { "effect_name": "low_hp_rage", "description": "+25% damage at low HP.", "value": 0.25,
+        { "effect_name": "keen_edge", "description": "Increases crit chance.",
+          "kind": "stat_mod", "target": "crit_chance", "op": "add", "value": 0.15 },
+        { "effect_name": "low_hp_rage", "description": "+25% damage at low HP.",
+          "kind": "stat_mod", "target": "damage", "op": "mult", "value": 0.25,
           "condition": { "key": "wearer_hp_pct", "op": "<", "value": 0.3 } }
     ]
 }
 ```
+`op` is `"add"` (flat) or `"mult"` (percentage). Effects with no `kind` still resolve
+and show in UI; they're just skipped by the stat aggregation.
 
 JSON numbers parse as `float` in Godot — cast with `int(...)` if you need an int.
 

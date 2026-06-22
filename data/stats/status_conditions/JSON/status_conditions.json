@@ -1,0 +1,14 @@
+{
+    "status_conditions": [
+        { "status_name": "Poison",    "condition_type": "damage_over_time", "description": "Loses HP at the end of each turn." },
+        { "status_name": "Burn",      "condition_type": "damage_over_time", "description": "Loses HP each turn from burning." },
+        { "status_name": "Bleeding",  "condition_type": "damage_over_time", "description": "Loses HP each turn from open wounds." },
+        { "status_name": "Silenced",  "condition_type": "status_effect",    "description": "Cannot cast magic abilities." },
+        { "status_name": "Sleep",     "condition_type": "status_effect",    "description": "Cannot act until woken, often by taking damage." },
+        { "status_name": "Cursed",    "condition_type": "status_effect",    "description": "Afflicted by a hex with adverse effects." },
+        { "status_name": "Frozen",    "condition_type": "status_effect",    "description": "Encased in ice and unable to act." },
+        { "status_name": "Paralyzed", "condition_type": "status_effect",    "description": "May be unable to act on a given turn." },
+        { "status_name": "Confused",  "condition_type": "status_effect",    "description": "May act unpredictably, including against allies." },
+        { "status_name": "Stunned",   "condition_type": "status_effect",    "description": "Skips the next turn." }
+    ]
+}

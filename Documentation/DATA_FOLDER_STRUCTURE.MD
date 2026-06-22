@@ -12,6 +12,7 @@ All game data is authored as JSON and loaded through one autoloaded singleton. G
 | [db_loader.gd](data/db_loader/db_loader.gd) | Autoloaded as **`DbLoader`**. Aggregates every per-folder loader, loads each category lazily and caches it. API: `get_category(name)`, `get_item(category, key)`, `get_categories([...])`, `category_names()`, `load_all()`, `reload(name)`, `clear_cache()`. |
 | [equipment_effects.gd](data/db_loader/equipment_effects.gd) | `class_name EquipmentEffects` — resolves an equipment item's named effects into full effect data. API: `for_item`, `for_item_key`, `with_effects`, `get_effect`, `active_for_item`, `active_for_item_key` (condition-filtered), `effect_field`, `effects_category`, `is_linked`. |
 | [condition_checker.gd](data/db_loader/condition_checker.gd) | `class_name ConditionChecker` — `passes(condition, context)` decides whether an effect applies. Conditions are `{key, op, value}` (or a list = AND); ops `== != < <= > >= in has`. |
+| [effect_resolver.gd](data/db_loader/effect_resolver.gd) | `class_name EffectResolver` — folds resolved effects into per-stat modifiers. Reads each effect's `kind`/`target`/`op` and aggregates as `(base + Σadd) × (1 + Σmult)`. API: `aggregate`, `modifier_for`, `apply`, `derived`. See [guide.to.effect.resolver.md](data/db_loader/guide.to.effect.resolver.md). |
 | [battle_context.gd](data/db_loader/battle_context.gd) | `class_name BattleContext` — the shared context-key vocabulary (constants like `WEARER_HP_PCT`, `TARGET_TYPE`), a chainable builder, and typed getters (`num`/`text`/`flag`/`list`). |
 | [guide.to.db.loader.md](data/db_loader/guide.to.db.loader.md) | Usage guide: accessing data, effects, conditions, and adding content. |
 | [guide.to.battle.context.md](data/db_loader/guide.to.battle.context.md) | Master guide to every context key and how to build/read a context. |
@@ -19,6 +20,19 @@ All game data is authored as JSON and loaded through one autoloaded singleton. G
 **How each data folder works:** every leaf folder holds a small loader `.gd` (declares a path + key field, exposes `static func get_all()`) plus a `JSON/` subfolder containing the actual data. To add an item you drop a `.json` file in `JSON/` — no code changes. Item-type folders use one JSON file per item, keyed by a name field; `*_effects` folders use a single JSON file holding an array of effects keyed by `effect_name`.
 
 **Effect linking:** equipment items name their effects in a per-type field — weapons `weapon_effect`, armor `armor_effects`, accessories `accessory_effects` — as an effect name or list of names. `EquipmentEffects` looks those names up in the matching effects collection (each weapon type resolves against its own `*_effects`; all armor shares `armor_effects`; all accessories share `accessory_effects`).
+
+**Effect application:** each effect carries `kind`/`target`/`op`/`value` (e.g. `stat_mod` / `crit_chance` / `add` / `0.15`). `EffectResolver` folds the condition-filtered effects into per-stat modifiers, and `Combatant.total_stat`/`derived_stat` apply them on top of a base.
+
+---
+
+## `data/combatant/` — The live-entity model (Phase 2).
+
+| File | Purpose |
+|------|---------|
+| [combatant.gd](data/combatant/combatant.gd) | `class_name Combatant` (RefCounted). One entity's **live state** — base attributes, HP/MP pools, equipment (`slot -> {category, key}`), and statuses — seeded from the Phase 1 templates via `seed_from_templates()`. Reads: `hp_pct`/`mp_pct`, `base_stat`, plus gear-aware `total_stat`/`derived_stat`/`equipment_modifiers` (base + active gear folded via `EffectResolver`). `build_context()` is the **single** place wearer-side context keys are built (via `BattleContext`), which closes the `statuses` vs `wearer_statuses` drift. `active_equipment_effects()` resolves all equipped items' condition-filtered effects against the combatant's own context (runtime; uses the global `DbLoader`/`EquipmentEffects`). |
+| [guide.to.combatant.md](data/combatant/guide.to.combatant.md) | Usage guide: templates vs. live state, building, equipping, statuses, derived stats, `build_context`, and how to verify. |
+
+> Verified by `tools/combatant_test.gd` (EditorScript — autoload-free surface) and `node_2dtestdb.gd` (run with F5 — the live gear-resolving path).
 
 ---
 
@@ -131,6 +145,8 @@ Mirrors `weapon_types/`. Each loader reads `JSON/<type>_effects.json` (array und
 
 ### `data/stats/` — All character stat systems: attributes, HP/MP, mental state, and status conditions.
 
+As of Phase 1, the stat systems below follow the **same loader + `JSON/` pattern** as the item database: a small loader `.gd` (exposes `static func get_all()`) reads a sibling `JSON/` collection file, and the category is registered in `DbLoader`. They were previously loose `var`-dictionaries (some with parse errors); they are now reachable everywhere via `DbLoader.get_category(...)`. These hold **template defaults** — a character's live per-instance values belong on the Combatant (Plan, Phase 2).
+
 ---
 
 #### `data/stats/stat_types/` — Core numerical stats that define a character's capabilities.
@@ -138,30 +154,30 @@ Mirrors `weapon_types/`. Each loader reads `JSON/<type>_effects.json` (array und
 ##### `data/stats/stat_types/attributes/`
 | File | Purpose |
 |------|---------|
-| [attribute_stats.gd](data/stats/stat_types/attributes/attribute_stats.gd) | Defines the 6 core character attributes: `strength`, `intelligence`, `vitality`, `willpower`, `agility`, `luck` — all defaulting to 10. Intended to be merged into party member dictionaries with a `name_` prefix for identification. |
+| [attribute_stats.gd](data/stats/stat_types/attributes/attribute_stats.gd) | Loader for **`attributes`** — reads `JSON/attributes.json` (array under `attributes`, keyed by `attribute_name`). The 6 core attributes `strength`, `intelligence`, `vitality`, `willpower`, `agility`, `luck`, each `{ attribute_name, base_value, description }` with a `base_value` of 10. |
 
 ##### `data/stats/stat_types/health_and_mana/`
 | File | Purpose |
 |------|---------|
-| [health_and_mana.gd](data/stats/stat_types/health_and_mana/health_and_mana.gd) | Defines `current_health`, `max_health`, `current_mana`, `max_mana` (all 100). **Note:** The health/mana values are currently defined outside the dictionary brackets — syntax error needs fixing before use. |
+| [health_and_mana.gd](data/stats/stat_types/health_and_mana/health_and_mana.gd) | Loader for **`health_and_mana`** — reads `JSON/health_and_mana.json` (array under `health_and_mana`, keyed by `stat_name`). The HP/MP pool defaults `max_health`, `current_health`, `max_mana`, `current_mana` (all 100). (Previously a parse error — values defined outside the dictionary brackets — fixed by the migration to JSON.) |
 | `health_and_mana_helper_functions/health_and_mana_helper_functions.gd` | Placeholder for HP/MP utility functions (healing, damage application, mana consumption, etc.). Empty — logic pending. |
 
 ---
 
-#### `data/stats/ability_and_stability/` — Ability definitions.
-
-##### Reserved empty subfolders:
-| Folder | Purpose |
+#### `data/stats/ability_and_stability/ability_types/` — Ability definitions.
+| Folder / File | Purpose |
 |------|---------|
-| `enemy_abilities/` | *(Empty)* Reserved for unique enemy ability definitions. |
-| `magic_abilities/` | *(Empty)* Reserved for spell and magic ability data. |
+| `magic_abilities/magic_abilities.gd` | Loader for **`magic_abilities`** — reads `JSON/magic_abilities.json` (array under `magic_abilities`, keyed by `magic_ability_name`). One `Test Magic Ability` placeholder with a `magic_ability_type` element block (fire/ice/lightning/earth/wind/water/dark/light). (Previously a parse error — `: Dictionary {` missing the `=` — fixed by the migration to JSON.) |
+| `enemy_abilities/enemy_abilities.gd` | Loader for **`enemy_abilities`** — reads `JSON/enemy_abilities.json` (array under `enemy_abilities`, keyed by `enemy_ability_name`). One `Test Enemy Ability` placeholder with `can_be_used_by` and an `enemy_ability_type` block (physical/magical/status_effect/healing/buff/debuff). (Previously a parse error — same missing `=` — fixed by the migration to JSON.) |
+
+> `mental_abilities/` and `stability_state/` are private game content (gitignored) and are intentionally not documented here.
 
 ---
 
 #### `data/stats/status_conditions/` — Debuffs and conditions that can be applied to characters.
 | File | Purpose |
 |------|---------|
-| [status_conditions.gd](data/stats/status_conditions/status_conditions.gd) | Defines 10 status effects: **Poison, Silenced, Sleep, Burn, Cursed, Frozen, Paralyzed, Confused, Bleeding, Stunned** — each classified as either `damage_over_time` or `status_effect`. Keyed by name for direct lookup (e.g., `status_conditions["Poison"]`). Marked as placeholder — detailed effect values pending. |
+| [status_conditions.gd](data/stats/status_conditions/status_conditions.gd) | Loader for **`status_conditions`** — reads `JSON/status_conditions.json` (array under `status_conditions`, keyed by `status_name`). 10 conditions: **Poison, Burn, Bleeding, Silenced, Sleep, Cursed, Frozen, Paralyzed, Confused, Stunned** — each `{ status_name, condition_type, description }`, classified as `damage_over_time` or `status_effect`. |
 | `status_condition_helper_functions/status_condition_helper_functions.gd` | Contains a stub `apply_status_condition(target, condition)` function. Logic not yet implemented. |
 
 ---

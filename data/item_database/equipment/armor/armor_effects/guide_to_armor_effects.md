@@ -1,5 +1,12 @@
 # TO-DO # 
 
+> **Status (Phase 3):** the parsing/applying questions below are now answered. Armor
+> effects load through `DbLoader.get_category("armor_effects")` (TODO 1–2), and each
+> effect carries `kind`/`target`/`op`/`value` so `EffectResolver` + `Combatant`
+> apply them on equip (TODO 4–5) — `defense_boost` = +10% `defense`,
+> `magic_resistance` = +30% `magic_defense`. UI display (TODO 3) is the remaining
+> open item. See `data/db_loader/guide.to.effect.resolver.md`.
+
 1. Figure out how to parse armor effects from the JSON files to use them in the game for both UI display, and for applying the effects in combat. This will likely involve creating a system to read the JSON data, store it in a structured format, and then apply the effects during combat calculations via accessing the stored data when an armor piece is equipped.
 2. Test the parsing of effects from the placeholder effects in the JSON files.
 3. Figure out how to display the effects in the UI when viewing the armor piece, and also how to show the effects in the combat log when they are applied during combat. This will likely involve creating a system to read the stored effects data and display it in a readable format in the UI, as well as logging the application of effects during combat for player feedback.

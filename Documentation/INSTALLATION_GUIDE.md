@@ -19,6 +19,7 @@ This framework is built and tested with Godot 4.6, so make sure you have that ve
 - Launch Godot and open your project. 
 - If you cloned the repository into a subfolder, make sure to adjust any file paths in your project settings or scripts to point to the correct location of the framework files.
 - If you downloaded the ZIP file and extracted it, ensure that the files are placed in the correct location within your project folder and adjust any file paths as needed.
+
 ## Step 4: Set up the autoload for the DB loader ##
 - In Godot, go to "Project" > "Project Settings" > "Autoload".
 - Click the "Add" button and select the `db_loader.gd` script from the framework (located in `data/db_loader/db_loader.gd`).

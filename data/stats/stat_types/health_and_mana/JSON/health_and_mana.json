@@ -1,0 +1,8 @@
+{
+    "health_and_mana": [
+        { "stat_name": "max_health",     "base_value": 100, "description": "Default maximum HP pool for a fresh character." },
+        { "stat_name": "current_health", "base_value": 100, "description": "Starting HP; live value is tracked on the Combatant." },
+        { "stat_name": "max_mana",       "base_value": 100, "description": "Default maximum MP pool for a fresh character." },
+        { "stat_name": "current_mana",   "base_value": 100, "description": "Starting MP; live value is tracked on the Combatant." }
+    ]
+}

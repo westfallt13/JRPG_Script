@@ -1,14 +1,12 @@
-#-------------------------------------------------------------------------------------------------------------------------------------------------
-#                       Attribute Stats
-#-------------------------------------------------------------------------------------------------------------------------------------------------
-#Now each condition is keyed by name, so you can look one up with status_conditions["Poison"] and check its type with status_conditions["Poison"]["condition_type"]
-#-------------------------------------------------------------------------------------------------------------------------------------------------
+# Attributes loader. One JSON file holding an array under "attributes"; each entry
+# is keyed by its "attribute_name". These are TEMPLATE DEFAULTS (e.g. strength 10) —
+# a character's live per-instance values belong on the Combatant (Plan, Phase 2),
+# not here.
+# To add an attribute: add an object to the array in JSON/attributes.json.
 
-var attribute_stats = { #Enter name_ before stats variable when code is added to party member dictionaries to make it easier to manage and adjust as needed
-    "strength": 10,
-    "intelligence": 10,
-    "vitality": 10,
-    "willpower": 10,
-    "agility": 10,
-    "luck": 10
-}
+const JSON_FILE := "res://JRPG_Code/JRPG_Script/data/stats/stat_types/attributes/JSON/attributes.json"
+const ROOT_KEY := "attributes"
+const KEY_FIELD := "attribute_name"
+
+static func get_all() -> Dictionary:
+	return JsonDB.load_collection(JSON_FILE, ROOT_KEY, KEY_FIELD)

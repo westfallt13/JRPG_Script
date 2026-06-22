@@ -2,12 +2,18 @@
     "armor_effects": [
         {
             "effect_name": "defense_boost",
-            "description": "Increases both the physical defense of the wearer by 10%.",
+            "description": "Increases the physical defense of the wearer by 10%.",
+            "kind": "stat_mod",
+            "target": "defense",
+            "op": "mult",
             "value": 0.1
         },
         {
             "effect_name": "magic_resistance",
-            "description": "Provides resistance to magical attacks to the wearer by 10%.",
+            "description": "Provides resistance to magical attacks to the wearer by 30%.",
+            "kind": "stat_mod",
+            "target": "magic_defense",
+            "op": "mult",
             "value": 0.3
         }
     ]

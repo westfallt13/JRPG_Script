@@ -1,14 +1,10 @@
-# Status Effects
+# Status-conditions loader. One JSON file holding an array under "status_conditions";
+# each entry is keyed by its "status_name".
+# To add a condition: add an object to the array in JSON/status_conditions.json.
 
-var status_conditions = { #Add actual details later, potentially rework
-    "Poison": {"condition_type": "damage_over_time"},
-    "Silenced": {"condition_type": "status_effect"},
-    "Sleep": {"condition_type": "status_effect"},
-    "Burn": {"condition_type": "damage_over_time"},
-    "Cursed": {"condition_type": "status_effect"},
-    "Frozen": {"condition_type": "status_effect"},
-    "Paralyzed": {"condition_type": "status_effect"},
-    "Confused": {"condition_type": "status_effect"},
-    "Bleeding": {"condition_type": "damage_over_time"},
-    "Stunned": {"condition_type": "status_effect"}
-}
+const JSON_FILE := "res://JRPG_Code/JRPG_Script/data/stats/status_conditions/JSON/status_conditions.json"
+const ROOT_KEY := "status_conditions"
+const KEY_FIELD := "status_name"
+
+static func get_all() -> Dictionary:
+	return JsonDB.load_collection(JSON_FILE, ROOT_KEY, KEY_FIELD)

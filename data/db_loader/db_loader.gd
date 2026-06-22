@@ -17,6 +17,7 @@ extends Node
 #   DbLoader.reload("swords")                     # re-read one category from disk
 
 const _BASE := "res://JRPG_Code/JRPG_Script/data/item_database/"
+const _STATS_BASE := "res://JRPG_Code/JRPG_Script/data/stats/"
 
 # category name -> preloaded per-folder loader script (each exposes static get_all()).
 var _loaders := {}
@@ -64,6 +65,13 @@ func _ready() -> void:
 		"knife_effects":      preload(_BASE + "equipment/weapons/weapon_effects/knife/dictionary_knives_effects.gd"),
 		"staff_effects":      preload(_BASE + "equipment/weapons/weapon_effects/staff/dictionary_staves_effects.gd"),
 		"sword_effects":      preload(_BASE + "equipment/weapons/weapon_effects/sword/dictionary_swords_effects.gd"),
+
+		# Stats (collection files; migrated from the old loose-dict scripts)
+		"attributes":        preload(_STATS_BASE + "stat_types/attributes/attribute_stats.gd"),
+		"health_and_mana":   preload(_STATS_BASE + "stat_types/health_and_mana/health_and_mana.gd"),
+		"status_conditions": preload(_STATS_BASE + "status_conditions/status_conditions.gd"),
+		"magic_abilities":   preload(_STATS_BASE + "ability_and_stability/ability_types/magic_abilities/magic_abilities.gd"),
+		"enemy_abilities":   preload(_STATS_BASE + "ability_and_stability/ability_types/enemy_abilities/enemy_abilities.gd"),
 	}
 
 

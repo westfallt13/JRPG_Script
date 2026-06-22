@@ -15,7 +15,8 @@ class_name ConditionChecker
 #   "has" -> actual (an Array) contains value
 #
 # `context` is a plain Dictionary you build at the call site, e.g.
-#   { "wearer_hp_pct": 0.25, "target_type": "undead", "statuses": ["Poison"] }
+#   { "wearer_hp_pct": 0.25, "target_type": "undead", "wearer_statuses": ["Poison"] }
+# Use the BattleContext key names (Combatant.build_context() builds them for you).
 # Extend the system by adding ops in _compare() or new keys to your context — no
 # other file needs to change.
 #

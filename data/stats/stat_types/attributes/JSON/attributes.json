@@ -1,0 +1,10 @@
+{
+    "attributes": [
+        { "attribute_name": "strength",     "base_value": 10, "description": "Raises physical damage and carrying capacity." },
+        { "attribute_name": "intelligence", "base_value": 10, "description": "Raises magical damage and spell potency." },
+        { "attribute_name": "vitality",     "base_value": 10, "description": "Raises maximum HP and physical defense." },
+        { "attribute_name": "willpower",    "base_value": 10, "description": "Raises maximum MP and magical defense." },
+        { "attribute_name": "agility",      "base_value": 10, "description": "Raises turn speed and evasion." },
+        { "attribute_name": "luck",         "base_value": 10, "description": "Raises critical-hit chance and rare drops." }
+    ]
+}

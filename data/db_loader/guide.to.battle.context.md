@@ -105,12 +105,10 @@ var ctx := BattleContext.new() \
 # 2. Resolve only the effects that apply right now
 var effects := EquipmentEffects.active_for_item_key("swords", equipped_sword, ctx)
 
-# 3. Apply them
-var bonus := 0.0
+# 3. Apply them — fold by each effect's target/op with EffectResolver
 for fx in effects:
-    bonus += float(fx.get("value", 0.0))
     log_line(fx["description"])
-final_damage = base_damage * (1.0 + bonus)
+final_damage = EffectResolver.derived(base_damage, "damage", effects)
 ```
 
 The matching effect JSON (in `sword_effects.json`):

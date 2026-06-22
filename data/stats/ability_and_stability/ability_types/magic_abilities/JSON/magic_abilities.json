@@ -1,0 +1,18 @@
+{
+    "magic_abilities": [
+        {
+            "magic_ability_name": "Test Magic Ability",
+            "description": "This is a test magic ability.",
+            "magic_ability_type": {
+                "fire": false,
+                "ice": false,
+                "lightning": false,
+                "earth": false,
+                "wind": false,
+                "water": false,
+                "dark": false,
+                "light": false
+            }
+        }
+    ]
+}
